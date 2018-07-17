@@ -35,7 +35,7 @@ $image = $value->image;
 <div class="container">
 
 <?php echo validation_errors(); ?>
-<?php echo form_open_multipart('Admincontroller/updateemployeedetails');?>
+<?php echo form_open_multipart('Employeecontroller/updateemployeedetails');?>
 <div class="form-group row">
       <div class="col-4">
         <label for="ex1">FIRSTNAME:</label>

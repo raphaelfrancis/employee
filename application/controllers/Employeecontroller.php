@@ -166,7 +166,7 @@ class Employeecontroller extends CI_Controller
         if($employeedata)
         {
             echo "updated successfully";
-            $this->getemployeedetails();
+           
         }
         else
         {
