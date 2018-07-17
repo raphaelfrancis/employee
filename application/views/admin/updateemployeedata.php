@@ -11,7 +11,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body><h1><center>UPDATE EMPLOYEE DATA</center></h1>
-<span style="padding-right:1000px;"></span><a href="employeelogout" class="btn btn-primary">LOG OUT</a>
+<span style="padding-right:1000px;"></span><a href="adminlogout" class="btn btn-primary">LOG OUT</a>
 <?php
 
 foreach($editemployeedata as $value)

@@ -23,7 +23,7 @@ $password  = $value->password;
 <div class="container">
 
 <?php echo validation_errors(); ?>
-<?php echo form_open('Employeecontroller/updateadmindetails');?>
+<?php echo form_open('Admincontroller/updateadmindetails');?>
 <div class="form-group row">
       
       <div class="col-4">
