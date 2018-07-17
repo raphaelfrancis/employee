@@ -12,7 +12,7 @@
 </head>
 <body><h1><center>ADMIN LOGIN</center></h1>
 <div class="container">
-<?php echo form_open('Employeecontroller/adminlogin');?>
+<?php echo form_open('Admincontroller/adminlogin');?>
 <?php echo validation_errors(); ?>
 <div class="form-group row">
       <div class="col-3">
