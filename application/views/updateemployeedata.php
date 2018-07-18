@@ -39,7 +39,7 @@ $image = $value->image;
 <div class="form-group row">
       <div class="col-4">
         <label for="ex1">FIRSTNAME:</label>
-        <input class="form-control" id = "name" name = "firstname" type="text" value="<?php if(isset($firstname)) echo $firstname;?>">
+        <input class="form-control" id = "firstname" name = "firstname" type="text" value="<?php if(isset($firstname)) echo $firstname;?>">
       </div>
       <div class="col-4">
         <label for="ex2">LASTNAME:</label>

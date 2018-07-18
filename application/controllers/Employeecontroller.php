@@ -76,18 +76,20 @@ class Employeecontroller extends CI_Controller
         }
         $logindata["username"] = trim(htmlentities($this->input->post('username')));
         $logindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+        
         $loginid = $this->Employeemodel->getemployeedata($logindata);
         if($loginid>0)
         {
-
+             echo json_encode($loginid);
 			/*$logindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
             $val = array('id'=>$loginid);
 			$this->load->view('viewemployeedata',$logindata);*/
 		$employeelogdata = array('id'=>$loginid,'is_logged_in'=>TRUE);
         $this->session->set_userdata('ci_session',$employeelogdata);
-        $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
-        $this->load->view('viewemployeedata',$employeelogindata);
-			
+        //$employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
+        //echo json_encode($employeelogindata);
+        //$this->load->view('viewemployeedata',$employeelogindata);
+		return true;
         }
         else
         {
@@ -102,7 +104,8 @@ class Employeecontroller extends CI_Controller
         {
 		$this->load->helper('url');
         $this->load->model('Employeemodel');
-		$empid =  trim(htmlentities($this->input->get('id')));
+        $empid =  trim(htmlentities($this->input->get('id')));
+        
 		if(is_numeric($empid))
 		{
 		$empdata["editemployeedata"] = $this->Employeemodel->editemployeedata($empid);
@@ -204,15 +207,27 @@ class Employeecontroller extends CI_Controller
             return json_encode($employeedata);
         //echo json_encode($employeedata);
         }
-        // if($this->Employeemodel->getUsername($_POST['username']))
-        // {
-        // echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
-        // </i> This user is already registered</span></label>';
-        // }
-        // else
-        // {
-        // echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Username is available</span></label>';
-        // }
+        else
+        {
+            return $employeedata;
+        }
+        
+    }
+
+    public function viewemployeedata()
+    {
+        if($this->session->userdata('ci_session'))
+        {
+            $this->load->model('Employeemodel');
+            $id = trim(htmlentities($this->input->get('id')));
+            $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($id);
+            $this->load->view('viewemployeedata',$employeelogindata);
+        }
+        else
+        {
+            redirect('Employeecontroller/index');
+        }
+        
     }
 
 
