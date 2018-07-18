@@ -23,7 +23,7 @@
       </div>
 </div>
 <button type="submit" class="btn btn-primary">Submit</button>
-<span style = "padding-right:100px;"></span><a href="Employeecontroller/employeeregister"  class="btn btn-primary" role="button">SIGNUP</a>
+<span style = "padding-right:100px;"></span><a href="index.php/Employeecontroller/employeeregister"  class="btn btn-primary" role="button">SIGNUP</a>
 
 </form>
   
