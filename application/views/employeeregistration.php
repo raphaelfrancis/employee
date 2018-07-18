@@ -87,6 +87,38 @@
 <div id = "doberror"></div>
 <div id = "experienceerror"></div>
 
+
+<script>
+  /*$(document).ready(function() {
+     $("employee").submit(function() {
+     var firstname = $('#firstname').val();
+     var lastname = $('#lastname').val();
+     var username = $('#username').val();
+     var password = $('#password').val();
+	 var email = $('#email').val();
+	 var dob = $('#dob').val();
+	 var degree = $('#degree').val();
+	 var designation = $('#designation');
+	 var joindate = $('#joindate').val();
+	 var experience = $('#experience').val();
+	 
+     
+     
+      $.ajax({
+        url: 'index.php/Employeecontroller/addemployeedetails',
+        type: "POST",
+        data: {firstname:firstname,lastname:lastname,username:username,password:password,email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
+        dataType:"json",
+		cache: false,
+        success: function(result){
+        alert(result);
+      }
+      });//closing ajax
+    });
+    });*/
+
+</script>
+
 <script type="text/javascript">
   $(document).ready(function() {
 

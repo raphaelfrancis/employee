@@ -362,7 +362,7 @@ class Employeecontroller extends CI_Controller
     public function checkusername()
     {
         $username = trim(htmlentities($this->input->post('username')));
-        echo $username;
+        //echo $username;
     }
 
      public function employeelogout()
