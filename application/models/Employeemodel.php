@@ -151,5 +151,21 @@ class Employeemodel extends CI_Model
         $deleteemployeedata = $this->db->update('employeedata'); 
         echo $deleteemployeedata;
         return $deleteemployeedata;
-	}
+    }
+    
+    public function getUsername($username)
+   {
+        $this->load->database();
+        $this->db->where('username' , $username);
+        $query = $this->db->get('employeedata');
+        if($query->num_rows()>0)
+        {
+        return true;
+        }
+        else 
+        {
+        return false;
+        }
+   }
 }
+?>

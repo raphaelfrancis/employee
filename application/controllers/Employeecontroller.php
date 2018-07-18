@@ -192,178 +192,32 @@ class Employeecontroller extends CI_Controller
 		$config["over_write"]=FALSE;
 		return $config;
 	}
-	
-	// public function admin()
-	// {
-	// 	redirect('/employeeregister');
-	// }
-	
-	// public function adminlogin()
-    // {
-	// 	$this->load->helper('url');
-    //     $this->load->model('Employeemodel');
-    //     $this->load->library('session');
-    //     $this->form_validation->set_rules('username', 'username', 'required');
-    //     $this->form_validation->set_rules('password', 'password', 'required');
-    //     if ($this->form_validation->run() == FALSE)
-    //     {
-    //         redirect('/employeeregister');
-    //     }
-    //     else
-    //     {
-    //     $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-    //     $adminlogindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
-    //     $adminloginid = $this->Employeemodel->getadmindata($adminlogindata);
-    //     if($adminloginid>0)
-    //     {
-    //        $adminlogdata = array('id'=>$adminloginid,'is_logged_in'=>TRUE);
-    //        $this->session->set_userdata('ci_session',$adminlogdata);
-    //        $adminlogin["admindata"] = $this->Employeemodel->getadmindetails($adminloginid);
-    //        $this->load->view('admin/viewadmindata',$adminlogin);
-    //     }
-    //     else
-    //     {
-    //         redirect('/employeeregister');
-    //     }
-    //    }
-        
-    // }
-	
-	// public function editadmindata()
-	// {
-	// 	if($this->session->userdata('ci_session'))
-    //     {
-	// 	$this->load->helper('url');
-    //     $this->load->model('Employeemodel');
-	// 	$empid =  trim(htmlentities($this->input->get('empid')));
-	// 	if(is_numeric($empid))
-	// 	{
-	// 	$empdata["editemployeedata"] = $this->Employeemodel->editadmindata($empid);
-	// 	$this->load->view('admin/updateadmindata',$empdata);
-	// 	}
-	// 	else
-	// 	{
-	// 		echo "id should be numeric";
-	// 	}
-	// 	}
-		
-	// }
-	
-	// 	public function updateadmindetails()
-	// {
-	// 	$this->load->model('Employeemodel');
-    //     $this->form_validation->set_rules('username', 'Username', 'required');
-    //     $this->form_validation->set_rules('password', 'Password', 'required');
-       
-    //     if ($this->form_validation->run() == FALSE)
-    //     {
-    //         $this->load->view('employeeregistration');
-    //     }
-	// 	$updateadmindata["id"] = trim(htmlentities($this->input->post('updateid')));
-    //     $updateadmindata["username"] = trim(htmlentities($this->input->post('username')));
-    //     $updateadmindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
-    //     $employeedata = $this->Employeemodel->updateadmindata($updateadmindata);
-    //     if($employeedata)
-    //     {
-    //         echo "updated successfully";
-    //     }
-    //     else
-    //     {
-    //         echo "failed to update";
-    //     }
-	// }
-	
-    // public function getemployeedetails()
-    // {
-    //     if($this->session->userdata('ci_session'))
-    //     {
-    //     $this->load->library('pagination');
-    //     $this->load->helper(array('form', 'url'));
-    //     $this->load->model('Employeemodel');
-    //     //pagination design
-    //     $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination">';
-    //     $config['full_tag_close']   = '</ul></nav></div>';
-    //     $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-    //     $config['num_tag_close']    = '</span></li>';
-    //     $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-    //     $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-    //     $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-    //     $config['next_tag_close']  = '<span aria-hidden="true"></span></span></li>';
-    //     // $config['next_tag_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-    //     $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-    //     $config['prev_tag_close']  = '</span></li>';
-    //     $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-    //     $config['first_tag_close'] = '</span></li>';
-    //     $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-    //     $config['last_tag_close']  = '</span></li>';
-    //     //pagination design ends
-        
-        
-    //     $config['total_rows'] = $this->Employeemodel->getemployeerows();
-    //     $config['base_url'] = base_url()."index.php/Employeecontroller/getemployeedetails";
-    //     $config['per_page'] = 10;
-    //     $config["uri_segment"] = 3;
-    //     $config['use_page_numbers'] = TRUE;
-       
-
-    //     $this->pagination->initialize($config);
-        
-    //     $page = ($this->uri->segment(3)) ? ($this->uri->segment(3)) : 0;
-    //     $employeeresult["empresult"] = $this->Employeemodel->getemployeesdata($config['per_page'],$page);
-    //     if($employeeresult){
-           
-    //     $employeeresult["links"] = $this->pagination->create_links();
-    //     $this->load->view('admin/viewemployeedata', $employeeresult);
-    //     }
-    //  }//session if ends
-    // }//function ends
-
-    // public function selectemployeedata()
-    // {
-    //     if($this->session->userdata('ci_session'))
-    //     {
-    //     $this->load->library('pagination');
-    //     $this->load->helper(array('form', 'url'));
-    //     $this->load->model('Employeemodel');
-    //     $employeeid = trim(htmlentities($this->input->get('id')));
-    //     //pagination design
-    //     $employeeresult["empresult"] = $this->Employeemodel->editemployeedata($employeeid);
-    //     if($employeeresult)
-    //     {
-    //     $this->load->view('admin/viewindivudalemployee', $employeeresult);
-    //     }
-    //     }
-
-    //     else
-    //     {
-    //         redirect('Employeecontroller/admin','refresh');
-    //     }
-    // } //function ends
-
-    // public function deleteemployeedata()
-	//  {
-	// 	if($this->session->userdata('ci_session'))
-    //     {
-    //     $this->load->model('Employeemodel');
-    //     $deleteid = trim(htmlentities($this->input->get('id')));
-    //     $deletearray = array("id"=>$deleteid);
-    //     $deleteresult = $this->Employeemodel->deleteemployeedata($deletearray);
-    //     if($deleteresult)
-    //     {
-    //     $this->getemployeedetails();
-    //     }
-    //     else
-    //     {
-    //         echo "delete was un successfull";
-    //     }
-	// 	}
-
-    //  }
-    public function checkusername()
-    {
+    
+    public function checkUsername()
+   {
+        $this->load->model('Employeemodel');
         $username = trim(htmlentities($this->input->post('username')));
-        //echo $username;
+        $employeedata = $this->Employeemodel->getUsername($username);
+        echo $employeedata;
+        if($employeedata == "1")
+        {
+            return json_encode($employeedata);
+        //echo json_encode($employeedata);
+        }
+        // if($this->Employeemodel->getUsername($_POST['username']))
+        // {
+        // echo '<label class="text-danger"><span><i class="fa fa-times" aria-hidden="true">
+        // </i> This user is already registered</span></label>';
+        // }
+        // else
+        // {
+        // echo '<label class="text-success"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Username is available</span></label>';
+        // }
     }
+
+
+	
+   
 
      public function employeelogout()
      {

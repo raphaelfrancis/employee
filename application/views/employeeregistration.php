@@ -3,9 +3,8 @@
 <title>Employee login</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
@@ -23,7 +22,7 @@
       </div>
       <div class="col-4">
         <label for="ex2">LASTNAME:</label>
-        <input class="form-control" id = "lastname" name = "lastname" type="text">
+        <input class="form-control" id = "lastname" name = "lastname" type="text" onblur="check_if_exists();">
       </div>
       <div class="col-4">
         <label for="ex3">USERNAME:</label>
@@ -86,36 +85,10 @@
 <div id = "joindateerror"></div>
 <div id = "doberror"></div>
 <div id = "experienceerror"></div>
-
-
+<div id = "msg"></div>
+<div id ="username_result"></div>
+<div id = "post"></div>
 <script>
-  /*$(document).ready(function() {
-     $("employee").submit(function() {
-     var firstname = $('#firstname').val();
-     var lastname = $('#lastname').val();
-     var username = $('#username').val();
-     var password = $('#password').val();
-	 var email = $('#email').val();
-	 var dob = $('#dob').val();
-	 var degree = $('#degree').val();
-	 var designation = $('#designation');
-	 var joindate = $('#joindate').val();
-	 var experience = $('#experience').val();
-	 
-     
-     
-      $.ajax({
-        url: 'index.php/Employeecontroller/addemployeedetails',
-        type: "POST",
-        data: {firstname:firstname,lastname:lastname,username:username,password:password,email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
-        dataType:"json",
-		cache: false,
-        success: function(result){
-        alert(result);
-      }
-      });//closing ajax
-    });
-    });*/
 
 </script>
 
@@ -222,7 +195,7 @@
                 if (data){
                   alert(data);
                   $('#success').css('color','green');
-                  $('#success').html('Employeedata added successfully');
+                  $('#success').html(data);
                 } else {
                     alert("error");
                 }
@@ -249,21 +222,44 @@
       });
   });
 </script>
-<script>
-        $(document).ready(function() {
-        $("#username").change(function() {
-        $.ajax({
-            type: "POST",
-            url: "checkusername",
-            data: {
-               username: $("#username").val()
-            },
-            success: function(result) {
-            alert(success);
-            }
-        });
-        });
-        });
+
+
+<script type="text/javascript">
+ $(document).ready(function(){
+  $('#username').change(function(){
+   var username = $('#username').val();
+  
+   if(username != ''){
+    $.ajax({
+     type: "POST",
+     url: "checkUsername",
+     data: {username:username},
+     dataType: "json",
+     success: function(data){
+      $('#username').val("");
+      $('#username_result').html('This person has already registered');
+      $('#username_result').css('color','red');
+     },
+     error: function (jqXHR, exception) {
+      var msg = '';
+      if (jqXHR.status === 0) {
+          msg = 'Not connect.\n Verify Network.';
+      } else if (jqXHR.status == 404) {
+          msg = 'Requested page not found. [404]';
+      } else if (jqXHR.status == 500) {
+          msg = 'Internal Server Error [500].';
+      } else {
+          msg = 'Uncaught Errors.\n' + jqXHR.responseText;
+      }
+      $('#post').css('color','red');
+      $('#post').html(msg);
+      return false;
+      }
+    });
+   }
+  });
+ });
 </script>
+
 
 </html>
