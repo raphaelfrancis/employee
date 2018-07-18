@@ -43,7 +43,7 @@ class Admincontroller extends CI_Controller
             $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
             $updatedata["lastname"] = trim(htmlentities($this->input->post('lastname')));
             $updatedata["username"] = trim(htmlentities($this->input->post('username')));
-            $updatedata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+            $updatedata["password"] = trim(htmlentities($this->input->post('password')));
             $updatedata["email"] = trim(htmlentities($this->input->post('email')));
             $updatedata["dob"] = trim(htmlentities($this->input->post('dob')));
             $updatedata["degree"] = trim(htmlentities($this->input->post('degree')));
@@ -107,7 +107,7 @@ class Admincontroller extends CI_Controller
         else
         {
             $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-            $adminlogindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
             $adminloginid = $this->Adminmodel->getadmindata($adminlogindata);
 
         if($adminloginid>0)
@@ -171,7 +171,7 @@ class Admincontroller extends CI_Controller
             $employeedata = $this->Adminmodel->updateadmindata($updateadmindata);
         if($employeedata)
         {
-            echo "updated successfully";
+            $this->getemployeedetails();
         }
         else
         {
@@ -296,7 +296,7 @@ class Admincontroller extends CI_Controller
 		$empdata["editemployeedata"] = $this->Adminmodel->editemployeedata($empid);
 		if(!empty($empdata))
 		{
-		$this->load->view('updateemployeedata',$empdata);
+		$this->load->view('admin/updateadminemployeedata',$empdata);
 		}
 		else
 		{
