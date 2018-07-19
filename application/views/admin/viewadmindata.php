@@ -18,7 +18,7 @@
   <a href="adminlogout" class="btn btn-primary">LOG OUT</a>
   <span style = "padding-right:1200px;"></span><a href = "adminlogin" class="btn btn-primary" >BACK</a>
 
-	<a href="editadmindata?empid=<?php echo $admindata[0]->id;?>" class="btn btn-primary">EDIT ADMIN DETAILS</a>
+	<a href="editadmindata?empid=<?php echo $data[0]->id;?>" class="btn btn-primary">EDIT ADMIN DETAILS</a>
 	<span style="padding-right:1000px;"></span><a href = "getemployeedetails"  class="btn btn-primary">VIEW EMPLOYEE DETAILS</a>
 
 		

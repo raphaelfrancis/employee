@@ -43,7 +43,7 @@ class Admincontroller extends CI_Controller
             $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
             $updatedata["lastname"] = trim(htmlentities($this->input->post('lastname')));
             $updatedata["username"] = trim(htmlentities($this->input->post('username')));
-            $updatedata["password"] = trim(htmlentities($this->input->post('password')));
+            $updatedata["password"] = md5(trim(htmlentities($this->input->post('password'))));
             $updatedata["email"] = trim(htmlentities($this->input->post('email')));
             $updatedata["dob"] = trim(htmlentities($this->input->post('dob')));
             $updatedata["degree"] = trim(htmlentities($this->input->post('degree')));
@@ -54,11 +54,11 @@ class Admincontroller extends CI_Controller
             $this->upload->do_upload('userfile');
             $updatedata["image"] = $_FILES["userfile"]["name"];		
             $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
-
+           
             if($employeedata)
             {
-            echo "updated successfully";
-            $this->getemployeedetails();
+             echo json_encode($employeedata);
+            //$this->getemployeedetails();
             }
             else
             {
@@ -112,13 +112,16 @@ class Admincontroller extends CI_Controller
 
         if($adminloginid>0)
         {
+		   echo json_encode($adminloginid);
            $adminlogdata = array('id'=>$adminloginid,'is_logged_in'=>TRUE);
            $this->session->set_userdata('ci_session',$adminlogdata);
-           $adminlogin["admindata"] = $this->Adminmodel->getadmindetails($adminloginid);
-           $this->load->view('admin/viewadmindata',$adminlogin);
+           //$adminlogin["admindata"] = $this->Adminmodel->getadmindetails($adminloginid);
+           //$this->load->view('admin/viewadmindata',$adminlogin);
+		   return true;
         }
         else
         {
+			return false;
             $this->load->view('admin/admin');
         }
         }//else ends
@@ -314,6 +317,22 @@ class Admincontroller extends CI_Controller
         }
 		
 	}
+	
+	public function viewadmindata()
+    {
+        if($this->session->userdata('ci_session'))
+        {
+            $this->load->model('Adminmodel');
+            $id = trim(htmlentities($this->input->get('id')));
+            $adminlogindata["data"] = $this->Adminmodel->getadmindetails($id);
+            $this->load->view('admin/viewadmindata',$adminlogindata);
+        }
+        else
+        {
+            redirect('Admincontroller/index');
+        }
+        
+    }
 
      
 	 

@@ -6,14 +6,14 @@
 
 <!-- Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- Latest compiled and minified Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body><h1><center>ADMIN LOGIN</center></h1>
 <div class="container">
-<?php echo form_open('Admincontroller/adminlogin');?>
-<?php echo validation_errors(); ?>
+<form id ="adminlogin" method="post">
 <div class="form-group row">
       <div class="col-3">
         <label for="ex1">USER NAME:</label>
@@ -23,12 +23,71 @@
       </div>
 </div>
 <button type="submit" class="btn btn-primary">Submit</button>
-
 </form>
-  
-
-
-
 </div>
 </body>
+<div id ="error"></div>
+<div id = "nameerror"></div>
+<div id = "passworderror"></div>
+<script type="text/javascript">
+  $(document).ready(function() {
+
+      $('#adminlogin').submit(function(e){
+        e.preventDefault();
+        var username = $("#username").val();
+        var password = $("#password").val();
+		    
+        if(username == '' || password == '')
+        {
+            $('#error').html("please enter some fields");
+        }
+
+        if(username == '')
+        {
+        $('#nameerror').css('color','red');
+        $('#nameerror').html('Please add Firstname');
+        return false;
+        }
+        if(password == '')
+        {
+        $('#passworderror').css('color','red');
+        $('#passworderror').html('Please add password');
+        return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            data: {username:username,password:password},
+            url: 'adminlogin',
+            dataType: "json",
+            success : function(data){
+                if (data){
+                  alert(data);
+                  window.location.href = "viewadmindata?id="+data;
+                } else {
+                    alert("error");
+                }
+            },
+            error: function (jqXHR, exception) {
+          var msg = '';
+          if (jqXHR.status === 0) {
+              msg = 'Not connect.\n Verify Network.';
+          } else if (jqXHR.status == 404) {
+              msg = 'Requested page not found. [404]';
+          } else if (jqXHR.status == 500) {
+              msg = 'Internal Server Error [500].';
+          } else {
+              msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          }
+          $('#post').css('color','red');
+          $('#post').html(msg);
+          return false;
+      }
+
+        });
+
+
+      });
+  });
+</script>
 </html>
