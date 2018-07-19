@@ -4,11 +4,9 @@ class Admincontroller extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper('url');
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
 		$this->load->library("session");
-        //$this->load->helper('url');
     }
 
     public function index()
@@ -16,55 +14,74 @@ class Admincontroller extends CI_Controller
         $this->load->view('admin');
     }
 
-	public function updateemployeedetails()
+	public function adminupdateemployeedata()
 	{
         if($this->session->userdata('ci_session'))
         {
-            $this->load->model('Adminmodel');
-            $this->load->library('upload');
-            $this->form_validation->set_rules('firstname', 'Firstname', 'required');
-            $this->form_validation->set_rules('lastname', 'Lastname', 'required');
-            $this->form_validation->set_rules('username', 'Username', 'required');
-            $this->form_validation->set_rules('password', 'Password', 'required');
-            $this->form_validation->set_rules('email', 'Email', 'required');
-            $this->form_validation->set_rules('dob', 'dob', 'required');
-            $this->form_validation->set_rules('designation', 'designation', 'required');
-            $this->form_validation->set_rules('degree', 'name of degree', 'required');
-            $this->form_validation->set_rules('joindate', 'joindate', 'required');
-            $this->form_validation->set_rules('experience', 'experience', 'required');
-            // $this->form_validation->set_rules('userfile', 'image', 'required');
-            if ($this->form_validation->run() == FALSE)
-            {
-                $this->load->view('employeeregistration');
-            }
-            else
-            {
-            $updatedata["id"] = trim(htmlentities($this->input->post('updateid')));
-            $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
-            $updatedata["lastname"] = trim(htmlentities($this->input->post('lastname')));
-            $updatedata["username"] = trim(htmlentities($this->input->post('username')));
-            $updatedata["password"] = md5(trim(htmlentities($this->input->post('password'))));
-            $updatedata["email"] = trim(htmlentities($this->input->post('email')));
-            $updatedata["dob"] = trim(htmlentities($this->input->post('dob')));
-            $updatedata["degree"] = trim(htmlentities($this->input->post('degree')));
-            $updatedata["designation"] = trim(htmlentities($this->input->post('designation')));
-            $updatedata["joindate"] = trim(htmlentities($this->input->post('joindate')));
-            $updatedata["experience"] = trim(htmlentities($this->input->post('experience')));
-            $this->upload->initialize($this->set_upload_options());
-            $this->upload->do_upload('userfile');
-            $updatedata["image"] = $_FILES["userfile"]["name"];		
-            $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
-           
-            if($employeedata)
-            {
-             echo json_encode($employeedata);
-            //$this->getemployeedetails();
-            }
-            else
-            {
-                echo "failed to update";
-            }
-            }//else ends 
+            
+                $this->load->library('form_validation');
+                $this->load->model('Adminmodel');
+            // $this->load->library('encryption');
+            // $this->load->library('upload');
+               
+                $this->form_validation->set_rules('firstname', 'firstname', 'required');
+                $this->form_validation->set_rules('lastname', 'lastname', 'required');
+                
+                $this->form_validation->set_rules('username', 'username', 'required');
+                $this->form_validation->set_rules('password', 'password', 'required');
+                $this->form_validation->set_rules('email', 'email', 'required');
+                $this->form_validation->set_rules('dob', 'dob', 'required');
+                $this->form_validation->set_rules('degree', 'degree', 'required');
+                $this->form_validation->set_rules('designation', 'designation', 'required');
+                $this->form_validation->set_rules('joindate', 'joindate', 'required');
+                $this->form_validation->set_rules('userfile', 'userfile', 'required');
+                // $this->form_validation->set_rules('designation', 'designation', 'required');
+                // $this->form_validation->set_rules('degree', ' degree', 'required');
+                // $this->form_validation->set_rules('joindate', 'joindate', 'required');
+                // $this->form_validation->set_rules('experience', 'experience', 'required');
+                // $this->form_validation->set_rules('userfile', 'image', 'required');
+                
+                if ($this->form_validation->run() == FALSE)
+                {
+                    //redirect('Admincontroller/admin');
+                    $errors = validation_errors();
+                    echo json_encode(array("error" => "validation failed"));
+                }
+                else
+                {
+                    // $testdata = $this->input->post('lastname');
+                    // $newdata =array("firstname" =>$testdata);
+                    // echo json_encode($newdata);
+                    $updatedata["id"] = trim(htmlentities($this->input->post('updateid')));
+                    $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
+                    $updatedata["lastname"] = trim(htmlentities($this->input->post('lastname')));
+                    $updatedata["username"] = trim(htmlentities($this->input->post('username')));
+                    $updatedata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+                    $updatedata["email"] = trim(htmlentities($this->input->post('email')));
+                    $updatedata["dob"] = trim(htmlentities($this->input->post('dob')));
+                    $updatedata["degree"] = trim(htmlentities($this->input->post('degree')));
+                    $updatedata["designation"] = trim(htmlentities($this->input->post('designation')));
+                    $updatedata["joindate"] = trim(htmlentities($this->input->post('joindate')));
+                    $updatedata["experience"] = trim(htmlentities($this->input->post('experience')));
+                    $this->upload->initialize($this->set_upload_options());
+                    $this->upload->do_upload('userfile');
+                    $updatedata["image"] = $_FILES["userfile"]["name"];	
+                    echo json_encode($updatedata);
+                    $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
+                    
+                    if($employeedata)
+                     {
+                   
+                     return true;
+                    $this->getemployeedetails();
+                     }
+                    // else
+                    // {
+                    //     echo "failed to update";
+                    //     return false;
+                    // }
+                }//else ends 
+            //is_ajax_request() ends
         }//session if ends
             else
             {
@@ -107,7 +124,7 @@ class Admincontroller extends CI_Controller
         else
         {
             $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
+            $adminlogindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
             $adminloginid = $this->Adminmodel->getadmindata($adminlogindata);
 
         if($adminloginid>0)
@@ -333,6 +350,34 @@ class Admincontroller extends CI_Controller
         }
         
     }
+    public function testupdate()
+    {
+        $this->load->model('Adminmodel');
+        $updatedata["id"] = trim(htmlentities($this->input->post('updateid')));
+        $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
+        $updatedata["lastname"] = trim(htmlentities($this->input->post('lastname')));
+        $updatedata["username"] = trim(htmlentities($this->input->post('username')));
+        $updatedata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+        $updatedata["email"] = trim(htmlentities($this->input->post('email')));
+        $updatedata["dob"] = trim(htmlentities($this->input->post('dob')));
+        $updatedata["degree"] = trim(htmlentities($this->input->post('degree')));
+        $updatedata["designation"] = trim(htmlentities($this->input->post('designation')));
+        $updatedata["joindate"] = trim(htmlentities($this->input->post('joindate')));
+        $updatedata["experience"] = trim(htmlentities($this->input->post('experience')));
+        //$updatedata["image"] = trim(htmlentities($this->input->post('userfile')));
+        $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
+        if($employeedata)
+        {
+            echo json_encode( $updatedata);
+            return true;
+        }
+        else
+        {
+            echo json_encode( $updatedata);
+            return false;
+        }
+    }
+    
 
      
 	 

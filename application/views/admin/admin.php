@@ -62,7 +62,7 @@
             dataType: "json",
             success : function(data){
                 if (data){
-                  alert(data);
+                  
                   window.location.href = "viewadmindata?id="+data;
                 } else {
                     alert("error");

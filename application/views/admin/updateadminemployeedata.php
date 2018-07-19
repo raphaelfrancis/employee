@@ -36,11 +36,11 @@ $image = $value->image;
 <div class="container">
 
 <?php echo validation_errors(); ?>
-<form enctype = "multipart/form-data" id = "update" method="post">
+<form name="updateemployeeForm" id="update"  method="post">
 <div class="form-group row">
       <div class="col-4">
         <label for="ex1">FIRSTNAME:</label>
-        <input class="form-control" id = "name" name = "firstname" type="text" value="<?php if(isset($firstname)) echo $firstname;?>">
+        <input class="form-control" id = "firstname" name = "firstname" type="text" value="<?php if(isset($firstname)) echo $firstname;?>">
       </div>
       <div class="col-4">
         <label for="ex2">LASTNAME:</label>
@@ -104,13 +104,27 @@ $image = $value->image;
 	   
 </div>
 
-<button type="submit" class="btn btn-primary">UPDATE</button>
+<button type="submit" class="btn btn-primary" ID ="submit">UPDATE</button>
 
 </form>
   
 
 
 <div id = "success"></div>
+<div id = "msg"></div>
+<div id = "nameerror"></div>
+<div id = "lastnameerror"></div>
+<div id = "usernameerror"></div>
+<div id = "passworderror"></div>
+<div id = "emailerror"></div>
+<div id = "degreeerror"></div>
+<div id = "designationerror"></div>
+<div id = "joindateerror"></div>
+<div id = "doberror"></div>
+<div id = "experienceerror"></div>
+<div id = "msg"></div>
+<div id ="username_result"></div>
+<div id = "post"></div>
 </div>
 </body>
 <script type="text/javascript">
@@ -119,130 +133,133 @@ $image = $value->image;
 
       $('#update').submit(function(e){
         e.preventDefault();
-        var firstname = $("#firstname").val();
-		var  lastname = $("#lastname").val();
-		var username = $("#username").val();
-		var password = $("#password").val();
-		var email = $("#email").val();
-		var dob = $("#dob").val();
-		var degree = $("#degree").val();
-		var designation = $("#designation").val();
-		var joindate = $("#joindate").val();
-		var experience = $("#experience").val();
-		var updateid = 5;
-		
-        if(firstname == '' ||lastname == ''||username == ''||password == ''||email == ''||dob ==''||degree == ''||designation == ''||joindate ==''||experience =='')
-        {
-            $('#error').html("please enter some fields");
-        }
-
-        if((firstname == '')||(!isNaN(firstname)))
-        {
-        $('#nameerror').css('color','red');
-        $('#nameerror').html('Please add Firstname');
-        return false;
-        }
-
-        if((lastname == '')||(!isNaN(lastname)))
-        {
-        $('#lastnameerror').css('color','red');
-        $('#lastnameerror').html('Please add lastname');
-        return false;
-        }
-
-        if(username == '')
-        {
-        $('#usernameerror').css('color','red');
-        $('#usernameerror').html('Please add username');
-        return false;
-        }
-        if(password == '')
-        {
-        $('#passworderror').css('color','red');
-        $('#passworderror').html('Please add password');
-        return false;
-        }
-
-        if(email == '')
-        {
-        $('#emailerror').css('color','red');
-        $('#emailerror').html('Please add email');
-        return false;
-        }
-        if(dob == '')
-        {
-        $('#doberror').css('color','red');
-        $('#doberror').html('Please add date of birth');
-        return false;
-        }
-         
-        if(degree == '')
-        {
-        $('#degreeerror').css('color','red');
-        $('#degreeerror').html('Please your degree');
-        return false;
-        }
-
-        if(designation == '')
-        {
-        $('#designationerror').css('color','red');
-        $('#designationerror').html('Please your designation');
-        return false;
-        }
-
-        if(joindate == '')
-        {
-        $('#joindateerror').css('color','red');
-        $('#joindateerror').html('Please your joindate');
-        return false;
-        }
-
-        if((experience == '')||(isNaN(experience)))
-        {
-        $('#experienceerror').css('color','red');
-        $('#experienceerror').html('Please add Experience in years');
-        return false;
-        }
-
-
-	   
-     
        
-        $.ajax({
-            type: "POST",
-            data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience,updateid:updateid},
-            url: 'updateemployeedetails',
-            dataType: "json",
-            success : function(data){
-                if (data){
-                  alert(data);
-                  //$('#success').css('color','green');
-                  //$('#success').html(data);
-                } else {
-                    alert("error");
-                }
-            },
-            error: function (jqXHR, exception) {
-          var msg = '';
-          if (jqXHR.status === 0) {
-              msg = 'Not connect.\n Verify Network.';
-          } else if (jqXHR.status == 404) {
-              msg = 'Requested page not found. [404]';
-          } else if (jqXHR.status == 500) {
-              msg = 'Internal Server Error [500].';
-          } else {
-              msg = 'Uncaught Error.\n' + jqXHR.responseText;
-          }
-          $('#post').css('color','red');
-          $('#post').html(msg);
+      var firstname = $("#firstname").val();
+      var lastname = $("#lastname").val();
+      var username = $("#username").val();
+      var password = $("#password").val();
+      var email = $("#email").val();
+      var dob = $("#dob").val();
+      var degree = $("#degree").val();
+      var designation = $("#designation").val();
+      var joindate = $("#joindate").val();
+      var experience = $("#experience").val();
+      var userfile = $("#userfile").val();
+      var updateid = <?php echo $updateid;?>;
+		  
+      if(firstname == '' ||lastname == ''||username == ''||password == ''||email == ''||dob ==''||degree == ''||designation == ''||joindate ==''||experience =='')
+      {
+          $('#error').html("please enter some fields");
           return false;
       }
 
-        });
+      if((firstname == '')||($.isNumeric(firstname)))
+      {
+        $('#nameerror').css('color','red');
+        $('#nameerror').html('Please add Firstname');
+        return false;
+      }
 
+      if((lastname == '')||(!isNaN(lastname)))
+      {
+      $('#lastnameerror').css('color','red');
+      $('#lastnameerror').html('Please add lastname');
+      return false;
+      }
+
+      if(username == '')
+      {
+      $('#usernameerror').css('color','red');
+      $('#usernameerror').html('Please add username');
+      return false;
+      }
+      if(password == '')
+      {
+      $('#passworderror').css('color','red');
+      $('#passworderror').html('Please add password');
+      return false;
+      }
+
+      if(email == '')
+      {
+        $('#emailerror').css('color','red');
+        $('#emailerror').html('Please add email');
+        return false;
+      }
+      if(dob == '')
+      {
+        $('#doberror').css('color','red');
+        $('#doberror').html('Please add date of birth');
+        return false;
+      }
+        
+      if(degree == '')
+      {
+        $('#degreeerror').css('color','red');
+        $('#degreeerror').html('Please your degree');
+        return false;
+      }
+
+      if(designation == '')
+      {
+        $('#designationerror').css('color','red');
+        $('#designationerror').html('Please your designation');
+        return false;
+      }
+
+      if(joindate == '')
+      {
+          $('#joindateerror').css('color','red');
+          $('#joindateerror').html('Please your joindate');
+          return false;
+      }
+
+      if((experience == '')||(isNaN(experience)))
+      {
+          $('#experienceerror').css('color','red');
+          $('#experienceerror').html('Please add Experience in years');
+          return false;
+      }
+    
+      
+      $.ajax({
+          url: 'testupdate',
+          type: "POST",
+          dataType: "json", 
+          data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,designation:designation,degree:degree,joindate:joindate,experience:experience,updateid:updateid},
+          success : function(data){
+            console.log(data);
+              if (data)
+              {
+               console.log(data);
+              }
+              else
+              {
+                alert("error");
+              }
+          },
+          error: function (jqXHR, exception) {
+            
+        var msg = '';
+        if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+        } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+        } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+        } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+        }
+        $('#post').css('color','red');
+        $('#post').html(msg);
+        return false;
+    }
 
       });
-  });
+
+
+    });
+});
 </script>
 
 </html>
