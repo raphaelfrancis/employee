@@ -236,7 +236,7 @@ $image = $value->image;
               }
               else
               {
-                alert("error");
+                console.log(data);
               }
           },
           error: function (jqXHR, exception) {
