@@ -68,7 +68,6 @@ class Admincontroller extends CI_Controller
                     $updatedata["image"] = $_FILES["userfile"]["name"];	
                     echo json_encode($updatedata);
                     $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
-                    
                     if($employeedata)
                      {
                    
@@ -124,7 +123,7 @@ class Admincontroller extends CI_Controller
         else
         {
             $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-            $adminlogindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
             $adminloginid = $this->Adminmodel->getadmindata($adminlogindata);
 
         if($adminloginid>0)
@@ -352,6 +351,7 @@ class Admincontroller extends CI_Controller
     }
     public function testupdate()
     {
+		$this->load->library('upload');
         $this->load->model('Adminmodel');
         $updatedata["id"] = trim(htmlentities($this->input->post('updateid')));
         $updatedata["firstname"] = trim(htmlentities($this->input->post('firstname')));
@@ -364,7 +364,9 @@ class Admincontroller extends CI_Controller
         $updatedata["designation"] = trim(htmlentities($this->input->post('designation')));
         $updatedata["joindate"] = trim(htmlentities($this->input->post('joindate')));
         $updatedata["experience"] = trim(htmlentities($this->input->post('experience')));
-        //$updatedata["image"] = trim(htmlentities($this->input->post('userfile')));
+		$updatedata["image"] = trim(htmlentities($this->input->post('userfile')));
+        $this->upload->initialize($this->set_upload_options());
+		$this->upload->do_upload('userfile');
         $employeedata = $this->Adminmodel->updateemployeedata($updatedata);
         if($employeedata)
         {

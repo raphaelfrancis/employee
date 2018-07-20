@@ -226,7 +226,8 @@ $image = $value->image;
           url: 'testupdate',
           type: "POST",
           dataType: "json", 
-          data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,designation:designation,degree:degree,joindate:joindate,experience:experience,updateid:updateid},
+		  mimeType: "multipart/form-data",
+          data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,designation:designation,degree:degree,joindate:joindate,experience:experience,updateid:updateid,userfile:userfile},
           success : function(data){
             console.log(data);
               if (data)
