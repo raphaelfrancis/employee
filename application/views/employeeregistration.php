@@ -7,6 +7,7 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <!-- Latest compiled and minified Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -186,41 +187,41 @@
 	   
      
        
-        $.ajax({
-            type: "POST",
-            data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
-            url: 'addemployeedetails',
-            dataType: "json",
-            success : function(data){
-                if (data){
-                  alert(data);
-                  $('#success').css('color','green');
-                  $('#success').html(data);
-                } else {
-                    alert("error");
-                }
-            },
-            error: function (jqXHR, exception) {
-          var msg = '';
-          if (jqXHR.status === 0) {
-              msg = 'Not connect.\n Verify Network.';
-          } else if (jqXHR.status == 404) {
-              msg = 'Requested page not found. [404]';
-          } else if (jqXHR.status == 500) {
-              msg = 'Internal Server Error [500].';
-          } else {
-              msg = 'Uncaught Error.\n' + jqXHR.responseText;
-          }
-          $('#post').css('color','red');
-          $('#post').html(msg);
-          return false;
-      }
+  //       $.ajax({
+  //           type: "POST",
+  //           data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
+  //           url: 'addemployeedetails',
+  //           dataType: "json",
+  //           success : function(data){
+  //               if (data){
+  //                 alert(data);
+  //                 $('#success').css('color','green');
+  //                 $('#success').html(data);
+  //               } else {
+  //                   alert("error");
+  //               }
+  //           },
+  //           error: function (jqXHR, exception) {
+  //         var msg = '';
+  //         if (jqXHR.status === 0) {
+  //             msg = 'Not connect.\n Verify Network.';
+  //         } else if (jqXHR.status == 404) {
+  //             msg = 'Requested page not found. [404]';
+  //         } else if (jqXHR.status == 500) {
+  //             msg = 'Internal Server Error [500].';
+  //         } else {
+  //             msg = 'Uncaught Error.\n' + jqXHR.responseText;
+  //         }
+  //         $('#post').css('color','red');
+  //         $('#post').html(msg);
+  //         return false;
+  //     }
 
-        });
+  //       });
 
 
-      });
-  });
+  //     });
+  // });
 </script>
 
 

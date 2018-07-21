@@ -75,7 +75,7 @@ class Employeecontroller extends CI_Controller
             $this->load->view('login');
         }
         $logindata["username"] = trim(htmlentities($this->input->post('username')));
-        $logindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+        $logindata["password"] = trim(htmlentities($this->input->post('password')));
         
         $loginid = $this->Employeemodel->getemployeedata($logindata);
         if($loginid>0)
@@ -169,6 +169,7 @@ class Employeecontroller extends CI_Controller
         $employeedata = $this->Employeemodel->updateemployeedata($updatedata);
         if($employeedata)
         {
+            print_r($_FILES["userfile"]["name"]);
             echo "updated successfully";
            
         }

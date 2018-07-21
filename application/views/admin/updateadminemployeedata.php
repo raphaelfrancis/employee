@@ -7,6 +7,7 @@
 <!-- Popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <!-- Latest compiled and minified Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -90,6 +91,9 @@ $image = $value->image;
         <label for="ex1">UPLOAD IMAGE:</label>
         <input class="form-control" id="userfile" name="userfile" type="file" class="btn btn-primary">
       </div>
+      <div class="col-4">
+        <input class="form-control" id="id" name="id" type="hidden" value="<?php echo $updateid;?>">
+      </div>
 	  <?php
 	  if($image!=='')
 	  {
@@ -144,9 +148,9 @@ $image = $value->image;
       var designation = $("#designation").val();
       var joindate = $("#joindate").val();
       var experience = $("#experience").val();
-      var userfile = $("#userfile").val();
+      var userfile = $('input[type=file]').val().replace(/.*(\/|\\)/,"");
       var updateid = <?php echo $updateid;?>;
-		  
+		  console.log(userfile);
       if(firstname == '' ||lastname == ''||username == ''||password == ''||email == ''||dob ==''||degree == ''||designation == ''||joindate ==''||experience =='')
       {
           $('#error').html("please enter some fields");
@@ -220,24 +224,28 @@ $image = $value->image;
           $('#experienceerror').html('Please add Experience in years');
           return false;
       }
-    
       
-      $.ajax({
-          url: 'testupdate',
+  
+     /* $.ajax({
+          
           type: "POST",
-          dataType: "json", 
-		  mimeType: "multipart/form-data",
+          mimeType: "multipart/form-data",
+          url: 'testupdate',
+          dataType: "json",
           data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,designation:designation,degree:degree,joindate:joindate,experience:experience,updateid:updateid,userfile:userfile},
+          cache:false,
+          
+         
           success : function(data){
+          console.log(data);
+          if (data)
+          {
             console.log(data);
-              if (data)
-              {
-               console.log(data);
-              }
-              else
-              {
-                console.log(data);
-              }
+          }
+          else
+          {
+            alert("error");
+          }
           },
           error: function (jqXHR, exception) {
             
@@ -260,7 +268,36 @@ $image = $value->image;
 
 
     });
-});
+});*/
+
+				var formData = new FormData($(this)[0]);
+				
+				//reset error messsage
+				$('.error').html('');
+				$.ajax({
+					url: "do_upload",
+					type: 'POST',
+					dataType: 'json',
+					data: formData,
+					async: true,
+					beforeSend: function() {
+						$('#btn-submit').prop('disabled', true);
+					},
+					success: function(response) {
+						var name = JSON.stringify(response)
+						console.log(name);
+					},
+					complete: function() {
+						$('#btn-submit').prop('disabled', false);
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+			});
+		});
+
 </script>
+
 
 </html>
