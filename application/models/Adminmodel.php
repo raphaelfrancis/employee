@@ -5,20 +5,23 @@ class Adminmodel extends CI_Model
     {
         $this->load->database();
         $username = $logindata["username"];
-        $password = $logindata["password"];
+        //$password = $logindata["password"];
+        $this->db->select('*');
+        $this->db->from('admin');
         $this->db->where('username', $username);  
-        $this->db->where('password', $password);  
-        $query = $this->db->get('admin');  
+        // $this->db->where('password', $password);  
+        $query = $this->db->get(); 
+        return $query->result_array(); 
         //SELECT * FROM users WHERE username = '$username' AND password = '$password'  
-        if($query->num_rows() > 0)  
-        {  
-            $qu = $query->row();
-            return $qu->id;  
-        }  
-        else  
-        {  
-            return false;       
-        }  
+        // if($query->num_rows() > 0)  
+        // {  
+        //     $qu = $query->row();
+        //     return $qu->id;  
+        // }  
+        // else  
+        // {  
+        //     return false;       
+        // }  
     }
 	
 	public function getadmindetails($adminloginid)
@@ -43,6 +46,7 @@ class Adminmodel extends CI_Model
 	}
 	public function updateadmindata($updateadmindata)
 	{
+        
 		$this->load->database();
         $updateadminid = $updateadmindata["id"];
         $this->db->where('id',$updateadminid );

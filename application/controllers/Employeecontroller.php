@@ -70,7 +70,6 @@ class Employeecontroller extends CI_Controller
         {
             echo "failed to insert";
         }
- 
 
     }
 
@@ -107,14 +106,13 @@ class Employeecontroller extends CI_Controller
         
         if($decryptedpassword == $loginpassword)
         {
-            echo json_encode($userdata[0]);
             $loginid = $userdata[0]["id"];
-            if(strlen($loginid) > 0)
+            if(strlen($loginid)>0)
             {
                 $employeelogdata = array('id'=>$loginid,'is_logged_in'=>TRUE);
                 $this->session->set_userdata('ci_session',$employeelogdata);
                 $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
-                return $loginid;
+                echo $loginid;
             }
            
         }
@@ -122,9 +120,7 @@ class Employeecontroller extends CI_Controller
         {
             echo json_encode("not equal");
         }
-
-        
-        
+ 
     }
 	
 	public function editemployeedata()
@@ -138,6 +134,7 @@ class Employeecontroller extends CI_Controller
 		if(is_numeric($empid))
 		{
             $empdata["editemployeedata"] = $this->Employeemodel->editemployeedata($empid);
+
 		if(!empty($empdata))
 		{
             $this->load->view('updateemployeedata',$empdata);
@@ -146,7 +143,7 @@ class Employeecontroller extends CI_Controller
 		{
 			echo "Invalid request";
 		}
-		}
+		}// is numeric ends
 		else
 		{
 			echo "Id should be numeric";
@@ -157,7 +154,8 @@ class Employeecontroller extends CI_Controller
             redirect('Employeecontroller');
         }
 		
-	}
+    }
+    
 	public function updateemployeedetails()
 	{
         if($this->session->userdata('ci_session'))
@@ -205,7 +203,7 @@ class Employeecontroller extends CI_Controller
         {
             echo "failed to update";
         }
-        }
+        }//else ends
         }//session if ends
         else
         {
@@ -226,7 +224,7 @@ class Employeecontroller extends CI_Controller
 	}
     
     public function checkUsername()
-   {
+    {
         $this->load->model('Employeemodel');
         $username = trim(htmlentities($this->input->post('username')));
         $employeedata = $this->Employeemodel->getUsername($username);
@@ -240,7 +238,6 @@ class Employeecontroller extends CI_Controller
         {
             return $employeedata;
         }
-        
     }
 
     public function viewemployeedata()
@@ -259,19 +256,11 @@ class Employeecontroller extends CI_Controller
         
     }
 
-
-	
-   
-
      public function employeelogout()
      {
          $this->session->unset_userdata('ci_session');
          redirect('Employeecontroller','refresh');
      }
 	 
-	 
-
-
-
 }
 ?>

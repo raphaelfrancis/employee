@@ -8,7 +8,9 @@ class Welcomecontroller extends CI_Controller
     }
     public function index()
     {
-        $this->load->view('imageupload');
+        //$this->load->view('imageupload');
+         $this->load->helper(array('form', 'url'));
+        $this->load->view('codeigniterencryption');
     }
     // public function view($id)
     // {
@@ -47,5 +49,39 @@ class Welcomecontroller extends CI_Controller
             //     unlink('./uploads/'.$data['filename']);
             // }
         }
+    }
+
+    public function passwordencryption()
+    {
+        $this->load->library('encryption');
+        $this->load->helper('form');
+        $this->encryption->initialize(array('driver' => 'openssl'));
+        $username = trim(htmlentities($this->input->post('username')));
+        $password = trim(htmlentities($this->input->post('password')));
+        $ciphertext = $this->encryption->encrypt($password);
+        echo $username."<br>";
+        echo $password."<br>";
+        echo $ciphertext."<br>";
+        $originaltext = $this->encryption->decrypt($ciphertext);
+        echo $originaltext."<br>";
+
+        if($originaltext == $password)
+        {
+            echo "match found";
+        }
+
+        else
+        {
+            echo "match not found";
+        }
+       
+       
+
+    }
+
+    public function viewencryption()
+    {
+        $this->load->helper(array('form', 'url'));
+        //$this->load->view('codeigniterencryption');
     }
 }

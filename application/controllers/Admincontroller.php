@@ -115,24 +115,56 @@ class Admincontroller extends CI_Controller
         }
         else
         {
-            $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
-            $adminloginid = $this->Adminmodel->getadmindata($adminlogindata);
+            $this->load->library('encryption');
+            $this->encryption->initialize(array('driver'=>'openssl'));
 
-        if($adminloginid>0)
-        {
-            echo json_encode($adminloginid);
-            $adminlogdata = array('id'=>$adminloginid,'is_logged_in'=>TRUE);
-            $this->session->set_userdata('ci_session',$adminlogdata);
-            //$adminlogin["admindata"] = $this->Adminmodel->getadmindetails($adminloginid);
-            //$this->load->view('admin/viewadmindata',$adminlogin);
+            $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
+
+            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
+
+            $loginpassword = trim(htmlentities($this->input->post('password')));
+
+            $admindata = $this->Adminmodel->getadmindata($adminlogindata);
+
+            $adminloginid = $admindata[0]["id"];
+
+            $adminpassword = $admindata[0]["password"];
+
+            echo json_encode($adminpassword);
             return true;
-        }
-        else
-        {
-			return false;
-            $this->load->view('admin/admin');
-        }
+
+            $originalpassword = $this->encryption->decrypt($adminpassword);
+
+            echo $loginpassword;
+
+            echo $originalpassword;
+
+            if($originalpassword == $loginpassword)
+            {
+                
+                if($adminloginid>0)
+                {
+                echo json_encode($adminloginid);
+                $adminlogdata = array('id'=>$adminloginid,'is_logged_in'=>TRUE);
+                $this->session->set_userdata('ci_session',$adminlogdata);
+                //$adminlogin["admindata"] = $this->Adminmodel->getadmindetails($adminloginid);
+                //$this->load->view('admin/viewadmindata',$adminlogin);
+                return true;
+                }
+                else
+                {
+                    return false;
+                    $this->load->view('admin/admin');
+                }
+
+
+            }
+             else
+             {
+                 echo "invalid login details";
+             }
+           
+        
         }//else ends 
     }
 	
@@ -145,7 +177,17 @@ class Admincontroller extends CI_Controller
             $empid =  trim(htmlentities($this->input->get('empid')));
 		if(is_numeric($empid))
 		{
+            $this->load->library('encryption');
+            $this->encryption->initialize(array('driver'=>'openssl'));
             $empdata["editemployeedata"] = $this->Adminmodel->editadmindata($empid);
+            $dbpassword = $empdata["editemployeedata"][0]->password;
+            $username = $empdata["editemployeedata"][0]->username;
+            $id = $empdata["editemployeedata"][0]->id;
+            $password = $this->encryption->decrypt($dbpassword);
+            // echo $password;
+            $empdata["editadmindata"]["id"] = $id;
+            $empdata["editadmindata"]["username"] = $username;
+            $empdata["editadmindata"]["password"] = $password;
             $this->load->view('admin/updateadmindata',$empdata);
 		}
 		else
@@ -175,18 +217,23 @@ class Admincontroller extends CI_Controller
 
         else
         {
+            $this->load->library('encryption');
+            $this->encryption->initialize(array('driver'=>'openssl'));
             $updateadmindata["id"] = trim(htmlentities($this->input->post('updateid')));
             $updateadmindata["username"] = trim(htmlentities($this->input->post('username')));
-            $updateadmindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+            $updateadmindata["password"] = trim(htmlentities($this->input->post('password')));
+            $updateadmindata["password"] = $this->encryption->encrypt($updateadmindata["password"]);
+            print_r($updateadmindata);
             $employeedata = $this->Adminmodel->updateadmindata($updateadmindata);
-        if($employeedata)
-        {
-            $this->getemployeedetails();
-        }
-        else
-        {
-             echo "failed to update";
-        }
+
+            if($employeedata)
+            {
+                $this->getemployeedetails();
+            }
+            else
+            {
+                echo "failed to update";
+            }
         }
         }//session if ends
         else

@@ -12,13 +12,12 @@
 </head>
 <body><h1><center>ADMIN UPDATE</center></h1>
 <?php
+print_r($editadmindata);
 
-foreach($editemployeedata as $value)
-{
-$updateid  = $value->id;
-$username  = $value->username;
-$password  = $value->password;
-}
+$updateid  = $editadmindata["id"];
+$username  = $editadmindata["username"];
+$password  = $editadmindata["password"];
+
 ?>
 <div class="container">
 

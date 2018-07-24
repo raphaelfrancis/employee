@@ -40,6 +40,7 @@
         if(username == '' || password == '')
         {
             $('#error').html("please enter some fields");
+            return false;
         }
 
         if(username == '')
