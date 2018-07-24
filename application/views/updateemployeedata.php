@@ -54,7 +54,7 @@ $image = $value->image;
 <div class="form-group row">
       <div class="col-4">
         <label for="ex1">PASSWORD:</label>
-        <input class="form-control" id="password" name="password" type="password" value="<?php if(isset($password)) echo $password;?>">
+        <input class="form-control" id="password" name="password" type="password" value="">
       </div>
       <div class="col-4">
         <label for="ex2">EMAIL:</label>

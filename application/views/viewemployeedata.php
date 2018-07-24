@@ -19,7 +19,7 @@
         <th>Firstname</th>
         <th>Lastname</th>
 		<th>Username</th>
-        <th>Password</th>
+        
 		<th>EMAIL</th>
        
       </tr>
@@ -29,7 +29,7 @@
         <td><?php echo $data[0]->firstname;?></td>
         <td><?php echo $data[0]->lastname;?></td>
 		<td><?php echo $data[0]->username;?></td>
-        <td><?php echo $data[0]->password;?></td>
+       
 		<td><?php echo $data[0]->email;?></td>
         
 		<td><a href="editemployeedata?id=<?php echo $data[0]->id;?>" class="btn btn-primary">EDIT</a></td>

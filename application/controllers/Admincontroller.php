@@ -116,7 +116,7 @@ class Admincontroller extends CI_Controller
         else
         {
             $adminlogindata["username"] = trim(htmlentities($this->input->post('username')));
-            $adminlogindata["password"] = md5(trim(htmlentities($this->input->post('password'))));
+            $adminlogindata["password"] = trim(htmlentities($this->input->post('password')));
             $adminloginid = $this->Adminmodel->getadmindata($adminlogindata);
 
         if($adminloginid>0)

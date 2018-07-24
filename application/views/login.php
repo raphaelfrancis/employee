@@ -12,6 +12,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body><h1><center>EMPLOYEE LOGIN</center></h1>
+
 <div class="container">
 <form id ="employeelogin" method="post">
 <div class="form-group row">
@@ -40,38 +41,41 @@
 
       $('#employeelogin').submit(function(e){
         e.preventDefault();
-        var username = $("#username").val();
-        var password = $("#password").val();
+            var username = $("#username").val();
+            var password = $("#password").val();
 		    
         if(username == '' || password == '')
         {
             $('#error').html("please enter some fields");
+            return false;
         }
 
         if(username == '')
         {
-        $('#nameerror').css('color','red');
-        $('#nameerror').html('Please add Firstname');
-        return false;
+            $('#nameerror').css('color','red');
+            $('#nameerror').html('Please add Firstname');
+            return false;
         }
         if(password == '')
         {
-        $('#passworderror').css('color','red');
-        $('#passworderror').html('Please add password');
-        return false;
+            $('#passworderror').css('color','red');
+            $('#passworderror').html('Please add password');
+            return false;
         }
-
+       
         $.ajax({
             type: "POST",
             data: {username:username,password:password},
             url: 'Employeecontroller/employeelogin',
             dataType: "json",
             success : function(data){
-                if (data){
-                  
-                  window.location.href = "http://localhost/employee/index.php/Employeecontroller/viewemployeedata?id="+data;
-                } else {
-                    alert("error");
+                if (data)
+                {
+                  window.location.href = "http://localhost/employee/index.php/Employeecontroller/viewemployeedata?id="+data.id;
+                }
+                else
+                {
+                    console.log(data);
                 }
             },
             error: function (jqXHR, exception) {

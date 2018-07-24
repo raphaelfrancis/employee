@@ -23,11 +23,11 @@
       </div>
       <div class="col-4">
         <label for="ex2">LASTNAME:</label>
-        <input class="form-control" id = "lastname" name = "lastname" type="text" onblur="check_if_exists();">
+        <input class="form-control" id = "lastname" name = "lastname" type="text">
       </div>
       <div class="col-4">
         <label for="ex3">USERNAME:</label>
-        <input class="form-control" id = "username" name = "username" type="text">
+        <input class="form-control" id = "username" name = "username" type="text" id = "username">
       </div>
 </div>
 <div class="form-group row">
@@ -95,8 +95,6 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-
-
       $('#employee').submit(function(e){
         e.preventDefault();
     var firstname = $("#firstname").val();
@@ -113,6 +111,7 @@
         if(firstname == '' ||lastname == ''||username == ''||password == ''||email == ''||dob ==''||degree == ''||designation == ''||joindate ==''||experience =='')
         {
             $('#error').html("please enter some fields");
+            return false;
         }
 
         if((firstname == '')||(!isNaN(firstname)))
@@ -183,53 +182,49 @@
         return false;
         }
 
-
-	   
-     
-       
-  //       $.ajax({
-  //           type: "POST",
-  //           data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
-  //           url: 'addemployeedetails',
-  //           dataType: "json",
-  //           success : function(data){
-  //               if (data){
-  //                 alert(data);
-  //                 $('#success').css('color','green');
-  //                 $('#success').html(data);
-  //               } else {
-  //                   alert("error");
-  //               }
-  //           },
-  //           error: function (jqXHR, exception) {
-  //         var msg = '';
-  //         if (jqXHR.status === 0) {
-  //             msg = 'Not connect.\n Verify Network.';
-  //         } else if (jqXHR.status == 404) {
-  //             msg = 'Requested page not found. [404]';
-  //         } else if (jqXHR.status == 500) {
-  //             msg = 'Internal Server Error [500].';
-  //         } else {
-  //             msg = 'Uncaught Error.\n' + jqXHR.responseText;
-  //         }
-  //         $('#post').css('color','red');
-  //         $('#post').html(msg);
-  //         return false;
-  //     }
-
-  //       });
-
-
-  //     });
-  // });
+        $.ajax({
+            type: "POST",
+            data: {firstname:firstname,lastname:lastname,username:username,password:password, email:email,dob:dob,degree:degree,designation:designation,joindate:joindate,experience:experience},
+            url: 'addemployeedetails',
+            dataType: "json",
+            success : function(data){
+                if (data)
+                {
+                  console.log(data);
+                  $('#success').css('color','green');
+                  $('#success').html(data);
+                }
+                else
+                {
+                  console.log("error");
+                }
+            },
+            error: function (jqXHR, exception) {
+          var msg = '';
+          if (jqXHR.status === 0) {
+              msg = 'Not connect.\n Verify Network.';
+          } else if (jqXHR.status == 404) {
+              msg = 'Requested page not found. [404]';
+          } else if (jqXHR.status == 500) {
+              msg = 'Internal Server Error [500].';
+          } else {
+              msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          }
+          $('#post').css('color','red');
+          $('#post').html(msg);
+          return false;
+      }
+    });
+    });
+   });
 </script>
 
-
+<!-- checking the existance of user name -->
 <script type="text/javascript">
  $(document).ready(function(){
   $('#username').change(function(){
    var username = $('#username').val();
-  
+
    if(username != ''){
     $.ajax({
      type: "POST",
@@ -241,26 +236,32 @@
       $('#username_result').html('This person has already registered');
       $('#username_result').css('color','red');
      },
-     error: function (jqXHR, exception) {
+      error: function (jqXHR, exception)
+      {
       var msg = '';
-      if (jqXHR.status === 0) {
+      if (jqXHR.status === 0)
+      {
           msg = 'Not connect.\n Verify Network.';
-      } else if (jqXHR.status == 404) {
+      }
+      else if (jqXHR.status == 404)
+      {
           msg = 'Requested page not found. [404]';
-      } else if (jqXHR.status == 500) {
+      }
+      else if (jqXHR.status == 500)
+      {
           msg = 'Internal Server Error [500].';
-      } else {
+      }
+      else
+      {
           msg = 'Uncaught Errors.\n' + jqXHR.responseText;
       }
-      $('#post').css('color','red');
-      $('#post').html(msg);
-      return false;
-      }
-    });
-   }
-  });
- });
+          $('#post').css('color','red');
+          $('#post').html(msg);
+          return false;
+      }//error function ends
+    }); //ajax ends
+   } //if ends
+  });//user name change function ends
+ }); //document ready function ends
 </script>
-
-
 </html>

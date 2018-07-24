@@ -7,7 +7,9 @@ class Employeecontroller extends CI_Controller
         $this->load->helper('url');
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
-		$this->load->library("session");
+        $this->load->library("session");
+        $this->load->helper('enc_dec');
+        // $this->load->helper('custom');
         //$this->load->helper('url');
     }
 
@@ -22,7 +24,6 @@ class Employeecontroller extends CI_Controller
     }
     public function addemployeedetails()
     {
-        $this->load->library('encryption');
         $this->load->model('Employeemodel');
         $this->form_validation->set_rules('firstname', 'Firstname', 'required');
         $this->form_validation->set_rules('lastname', 'Lastname', 'required');
@@ -41,18 +42,28 @@ class Employeecontroller extends CI_Controller
         $data["firstname"] = trim(htmlentities($this->input->post('firstname')));
         $data["lastname"] = trim(htmlentities($this->input->post('lastname')));
         $data["username"] = trim(htmlentities($this->input->post('username')));
-        $password = md5(trim(htmlentities($this->input->post('password'))));
-        $data["password"] = $password;
+        
+        //$data["password"] = encrypt_data(trim(htmlentities($this->input->post('password'))));
+        // echo $data["password"];
+        // echo "<br>";
+        // $decryptpassword = decrypt_data($data["password"]);
+        // echo $decryptpassword;
+        // exit();
+       
+        $data["password"] = encrypt_data(trim(htmlentities($this->input->post('password'))));
         $data["email"] = trim(htmlentities($this->input->post('email')));
         $data["dob"] = trim(htmlentities($this->input->post('dob')));
         $data["degree"] = trim(htmlentities($this->input->post('degree')));
         $data["designation"] = trim(htmlentities($this->input->post('designation')));
         $data["joindate"] = trim(htmlentities($this->input->post('joindate')));
         $data["experience"] = trim(htmlentities($this->input->post('experience')));
+       
         $employeedata = $this->Employeemodel->addemployeedata($data);
+       
         if($employeedata)
         {
             echo json_encode($employeedata);
+            return true;
             //echo "inserted successfully";
         }
         else
@@ -75,26 +86,44 @@ class Employeecontroller extends CI_Controller
             $this->load->view('login');
         }
         $logindata["username"] = trim(htmlentities($this->input->post('username')));
-        $logindata["password"] = trim(htmlentities($this->input->post('password')));
         
-        $loginid = $this->Employeemodel->getemployeedata($logindata);
-        if($loginid>0)
+        //$loginpassword = trim(htmlentities($this->input->post('password')));
+
+         //password encryption starts
+        //  $key = "abc123";
+        //  $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+        //  $iv = openssl_random_pseudo_bytes($ivlen);
+        //  $ciphertext_raw = openssl_encrypt($loginpassword, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
+        //  $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+        //  $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+          //password encryption ends
+        $logindata["password"] = encrypt_data(trim(htmlentities($this->input->post('password'))));
+        
+       
+        $userdata = $this->Employeemodel->getemployeedata($logindata);
+        $dbpassword = $userdata[0]['password'];
+        $decryptedpassword = decrypt_data($dbpassword);
+        $loginpassword = decrypt_data($logindata["password"]);
+        
+        if($decryptedpassword == $loginpassword)
         {
-             echo json_encode($loginid);
-			/*$logindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
-            $val = array('id'=>$loginid);
-			$this->load->view('viewemployeedata',$logindata);*/
-		$employeelogdata = array('id'=>$loginid,'is_logged_in'=>TRUE);
-        $this->session->set_userdata('ci_session',$employeelogdata);
-        //$employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
-        //echo json_encode($employeelogindata);
-        //$this->load->view('viewemployeedata',$employeelogindata);
-		return true;
+            echo json_encode($userdata[0]);
+            $loginid = $userdata[0]["id"];
+            if(strlen($loginid) > 0)
+            {
+                $employeelogdata = array('id'=>$loginid,'is_logged_in'=>TRUE);
+                $this->session->set_userdata('ci_session',$employeelogdata);
+                $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
+                return $loginid;
+            }
+           
         }
         else
         {
-            echo "Invalid Login Details";
+            echo json_encode("not equal");
         }
+
+        
         
     }
 	
@@ -102,16 +131,16 @@ class Employeecontroller extends CI_Controller
 	{
         if($this->session->userdata('ci_session'))
         {
-		$this->load->helper('url');
-        $this->load->model('Employeemodel');
-        $empid =  trim(htmlentities($this->input->get('id')));
+            $this->load->helper('url');
+            $this->load->model('Employeemodel');
+            $empid =  trim(htmlentities($this->input->get('id')));
         
 		if(is_numeric($empid))
 		{
-		$empdata["editemployeedata"] = $this->Employeemodel->editemployeedata($empid);
+            $empdata["editemployeedata"] = $this->Employeemodel->editemployeedata($empid);
 		if(!empty($empdata))
 		{
-		$this->load->view('updateemployeedata',$empdata);
+            $this->load->view('updateemployeedata',$empdata);
 		}
 		else
 		{
@@ -125,7 +154,7 @@ class Employeecontroller extends CI_Controller
         }//session if ends
         else
         {
-            redirect('Employeecontroller/index');
+            redirect('Employeecontroller');
         }
 		
 	}
@@ -133,18 +162,18 @@ class Employeecontroller extends CI_Controller
 	{
         if($this->session->userdata('ci_session'))
         {
-		$this->load->model('Employeemodel');
-		$this->load->library('upload');
-        $this->form_validation->set_rules('firstname', 'Firstname', 'required');
-        $this->form_validation->set_rules('lastname', 'Lastname', 'required');
-        $this->form_validation->set_rules('username', 'Username', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required');
-        $this->form_validation->set_rules('dob', 'dob', 'required');
-        $this->form_validation->set_rules('designation', 'designation', 'required');
-        $this->form_validation->set_rules('degree', 'name of degree', 'required');
-        $this->form_validation->set_rules('joindate', 'joindate', 'required');
-        $this->form_validation->set_rules('experience', 'experience', 'required');
+            $this->load->model('Employeemodel');
+            $this->load->library('upload');
+            $this->form_validation->set_rules('firstname', 'Firstname', 'required');
+            $this->form_validation->set_rules('lastname', 'Lastname', 'required');
+            $this->form_validation->set_rules('username', 'Username', 'required');
+            //$this->form_validation->set_rules('password', 'Password', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required');
+            $this->form_validation->set_rules('dob', 'dob', 'required');
+            $this->form_validation->set_rules('designation', 'designation', 'required');
+            $this->form_validation->set_rules('degree', 'name of degree', 'required');
+            $this->form_validation->set_rules('joindate', 'joindate', 'required');
+            $this->form_validation->set_rules('experience', 'experience', 'required');
 		// $this->form_validation->set_rules('userfile', 'image', 'required');
         if ($this->form_validation->run() == FALSE)
         {
@@ -169,9 +198,8 @@ class Employeecontroller extends CI_Controller
         $employeedata = $this->Employeemodel->updateemployeedata($updatedata);
         if($employeedata)
         {
-            print_r($_FILES["userfile"]["name"]);
             echo "updated successfully";
-           
+            echo "<script>window.history.back();</script>";
         }
         else
         {
@@ -181,7 +209,7 @@ class Employeecontroller extends CI_Controller
         }//session if ends
         else
         {
-            redirect('Employeecontroller/index');
+            redirect('Employeecontroller');
         }
 	}
 	
@@ -226,7 +254,7 @@ class Employeecontroller extends CI_Controller
         }
         else
         {
-            redirect('Employeecontroller/index');
+            redirect('Employeecontroller');
         }
         
     }

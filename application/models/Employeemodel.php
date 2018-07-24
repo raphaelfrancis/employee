@@ -18,22 +18,26 @@ class Employeemodel extends CI_Model
 
     public function getemployeedata($logindata)
     {
-        $this->load->database();
+        
         $username = $logindata["username"];
-        $password = $logindata["password"];
-        $this->db->where('username', $username);  
-        $this->db->where('password', $password);  
-        $query = $this->db->get('employeedata');  
+       
+        $this->load->database();
+        $this->db->select('*');  
+        $this->db->from('employeedata');
+        $this->db->where('username',$username);  		
+        $query = $this->db->get(); 
+		return $query->result_array();
         //SELECT * FROM users WHERE username = '$username' AND password = '$password'  
-        if($query->num_rows() > 0)  
-        {  
-            $qu = $query->row();
-            return $qu->id;  
-        }  
-        else  
-        {  
-            return false;       
-        }  
+        // if($query->num_rows() > 0)  
+        // {  
+        //     // $qu = $query->row();
+        //     // return $qu->id; 
+        //     return $query->result(); 
+        // }  
+        // else  
+        // {  
+        //     return false;       
+        // }  
     }
 	
 	public function getemployeedetails($loginid)
