@@ -223,7 +223,7 @@
 <script type="text/javascript">
  $(document).ready(function(){
   $('#username').change(function(){
-   var username = $('#username').val();
+        var username = $('#username').val();
 
    if(username != ''){
     $.ajax({
@@ -231,33 +231,34 @@
      url: "checkUsername",
      data: {username:username},
      dataType: "json",
-     success: function(data){
-      $('#username').val("");
-      $('#username_result').html('This person has already registered');
-      $('#username_result').css('color','red');
+     success: function(data)
+     {  
+        $('#username').val("");
+        $('#username_result').html('This person has already registered');
+        $('#username_result').css('color','red');
      },
       error: function (jqXHR, exception)
       {
-      var msg = '';
+        var msg = '';
       if (jqXHR.status === 0)
       {
-          msg = 'Not connect.\n Verify Network.';
+        msg = 'Not connect.\n Verify Network.';
       }
       else if (jqXHR.status == 404)
       {
-          msg = 'Requested page not found. [404]';
+        msg = 'Requested page not found. [404]';
       }
       else if (jqXHR.status == 500)
       {
-          msg = 'Internal Server Error [500].';
+        msg = 'Internal Server Error [500].';
       }
       else
       {
-          msg = 'Uncaught Errors.\n' + jqXHR.responseText;
+        msg = 'Uncaught Errors.\n' + jqXHR.responseText;
       }
-          $('#post').css('color','red');
-          $('#post').html(msg);
-          return false;
+        $('#post').css('color','red');
+        $('#post').html(msg);
+        return false;
       }//error function ends
     }); //ajax ends
    } //if ends

@@ -71,7 +71,7 @@
             success : function(data){
                 if (data)
                 {
-                  window.location.href = "http://localhost/employee/index.php/Employeecontroller/viewemployeedata?id="+data.id;
+                  window.location.href = "http://localhost/employee/index.php/Employeecontroller/viewemployeedata?id="+data;
                 }
                 else
                 {
