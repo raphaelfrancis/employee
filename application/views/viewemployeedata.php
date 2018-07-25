@@ -32,7 +32,7 @@
        
 		<td><?php echo $data[0]->email;?></td>
         
-		<td><a href="editemployeedata?id=<?php echo $data[0]->id;?>" class="btn btn-primary">EDIT</a></td>
+		<td><a href="editemployeedata" class="btn btn-primary">EDIT</a></td>
 		
 		</tr>
     </tbody>

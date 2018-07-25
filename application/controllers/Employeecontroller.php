@@ -86,19 +86,10 @@ class Employeecontroller extends CI_Controller
         }
         $logindata["username"] = trim(htmlentities($this->input->post('username')));
         
-        //$loginpassword = trim(htmlentities($this->input->post('password')));
-
-         //password encryption starts
-        //  $key = "abc123";
-        //  $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
-        //  $iv = openssl_random_pseudo_bytes($ivlen);
-        //  $ciphertext_raw = openssl_encrypt($loginpassword, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
-        //  $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
-        //  $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
-          //password encryption ends
+        
         $logindata["password"] = encrypt_data(trim(htmlentities($this->input->post('password'))));
         
-       
+        
         $userdata = $this->Employeemodel->getemployeedata($logindata);
         $dbpassword = $userdata[0]['password'];
         $decryptedpassword = decrypt_data($dbpassword);
@@ -107,18 +98,22 @@ class Employeecontroller extends CI_Controller
         if($decryptedpassword == $loginpassword)
         {
             $loginid = $userdata[0]["id"];
+
             if(strlen($loginid)>0)
             {
                 $employeelogdata = array('id'=>$loginid,'is_logged_in'=>TRUE);
                 $this->session->set_userdata('ci_session',$employeelogdata);
-                $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
-                echo $loginid;
+               // $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($loginid);
+                echo json_encode($employeelogdata);
+                return true;
+            //  return json_encode(array("success" => "User Login"));
             }
            
         }
         else
         {
-            echo json_encode("not equal");
+           echo  json_encode(array("error" => "User credentials not matching"));
+           return false;
         }
  
     }
@@ -127,9 +122,11 @@ class Employeecontroller extends CI_Controller
 	{
         if($this->session->userdata('ci_session'))
         {
+            $data[] = $this->session->userdata('ci_session');
+            $empid = $data[0]["id"];
             $this->load->helper('url');
             $this->load->model('Employeemodel');
-            $empid =  trim(htmlentities($this->input->get('id')));
+            //$empid =  trim(htmlentities($this->input->get('id')));
         
 		if(is_numeric($empid))
 		{
@@ -209,7 +206,7 @@ class Employeecontroller extends CI_Controller
         {
             redirect('Employeecontroller');
         }
-	}
+	}//function ends
 	
 	private function set_upload_options()
 	{
@@ -244,8 +241,10 @@ class Employeecontroller extends CI_Controller
     {
         if($this->session->userdata('ci_session'))
         {
+            $data[] = $this->session->userdata('ci_session');
+            $id = $data[0]["id"];
             $this->load->model('Employeemodel');
-            $id = trim(htmlentities($this->input->get('id')));
+            //$id = trim(htmlentities($this->input->get('id')));
             $employeelogindata["data"] = $this->Employeemodel->getemployeedetails($id);
             $this->load->view('viewemployeedata',$employeelogindata);
         }

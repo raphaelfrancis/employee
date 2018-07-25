@@ -69,10 +69,11 @@
             url: 'Employeecontroller/employeelogin',
             dataType: "json",
             success : function(data){
+                console.log(data);
                 if (data)
                 {
-                  console.log(data);
-                  window.location.href = "http://localhost/employee/index.php/Employeecontroller/viewemployeedata?id="+data;
+                    console.log(data);
+                    window.location.href = "<?php echo base_url();?>index.php/Employeecontroller/viewemployeedata";
                 }
                 else
                 {
@@ -80,6 +81,7 @@
                 }
             },
             error: function (jqXHR, exception) {
+               
           var msg = '';
           if (jqXHR.status === 0) {
               msg = 'Not connect.\n Verify Network.';
